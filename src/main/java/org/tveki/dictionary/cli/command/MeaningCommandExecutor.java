@@ -15,15 +15,20 @@ import org.tveki.glosbe.dictionary.GlosbeDictionary;
  *
  * @author tveki
  */
-public class MeaningCommandExecutor implements CommandExecutor {
+public class MeaningCommandExecutor extends AbstractCommandExecutor {
 
-    public static final Language DEFAULT_FROM_LANGUAGE = Language.ENGLISH;
-    public static final Language DEFAULT_TO_LANGUAGE = Language.HUNGARIAN;
+    public MeaningCommandExecutor(Language fromLanguage, Language toLanguage) {
+        super(fromLanguage, toLanguage);
+    }
+
+    public MeaningCommandExecutor() {
+        super();
+    }
 
     @Override
     public void execute(String[] args) {
         Dictionary dictionary = new GlosbeDictionary();
-        TranslateRequest request = prepareDefaultRequest();
+        TranslateRequest request = prepareRequest();
         request.setPhrase(args[1]);
 
         TranslateResponse response = dictionary.translate(request);
@@ -38,17 +43,17 @@ public class MeaningCommandExecutor implements CommandExecutor {
             System.out.println("No meanings found for " + response.getPhrase());
         } else {
             System.out.println("-------------------------------------");
-            System.out.println("meanings found for " + response.getPhrase() + ":");
+            System.out.println("Meanings found for " + response.getPhrase() + ":");
             for (String str : response.getMeanings()) {
                 System.out.println(str);
             }
         }
     }
 
-    private TranslateRequest prepareDefaultRequest() {
+    private TranslateRequest prepareRequest() {
         TranslateRequest request = new TranslateRequest();
-        request.setFrom(DEFAULT_FROM_LANGUAGE);
-        request.setTo(DEFAULT_TO_LANGUAGE);
+        request.setFrom(fromLanguage);
+        request.setTo(toLanguage);
         return request;
     }
 

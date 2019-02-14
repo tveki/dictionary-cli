@@ -11,24 +11,31 @@ import org.tveki.dictionary.api.TranslateRequest;
 import org.tveki.dictionary.api.TranslateResponse;
 import org.tveki.glosbe.dictionary.GlosbeDictionary;
 
+import java.util.Objects;
+
 /**
  *
  * @author tveki
  */
-public class TranslateCommandExecutor implements CommandExecutor {
+public class TranslateCommandExecutor extends AbstractCommandExecutor {
 
-    public static final Language DEFAULT_FROM_LANGUAGE = Language.ENGLISH;
-    public static final Language DEFAULT_TO_LANGUAGE = Language.HUNGARIAN;
+    public TranslateCommandExecutor(Language fromLanguage, Language toLanguage) {
+        super(fromLanguage, toLanguage);
+    }
+
+    public TranslateCommandExecutor() {
+        super();
+    }
 
     @Override
     public void execute(String[] args) {
         Dictionary dictionary = new GlosbeDictionary();
-        TranslateRequest request = prepareDefaultRequest();
+        TranslateRequest request = prepareRequest();
         request.setPhrase(args[1]);
 
         TranslateResponse response = dictionary.translate(request);
 
-        System.out.println(response.getFrom().getISO2Code() + " -> " + response.getTo().getISO2Code());
+        System.out.printf("%s -> %s", response.getFrom().getISO2Code(), response.getTo().getISO2Code());
 
         printTranslations(response);
     }
@@ -45,10 +52,10 @@ public class TranslateCommandExecutor implements CommandExecutor {
         }
     }
 
-    private TranslateRequest prepareDefaultRequest() {
+    private TranslateRequest prepareRequest() {
         TranslateRequest request = new TranslateRequest();
-        request.setFrom(DEFAULT_FROM_LANGUAGE);
-        request.setTo(DEFAULT_TO_LANGUAGE);
+        request.setFrom(fromLanguage);
+        request.setTo(toLanguage);
         return request;
     }
 
