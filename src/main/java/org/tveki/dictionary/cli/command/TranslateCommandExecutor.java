@@ -35,17 +35,17 @@ public class TranslateCommandExecutor extends AbstractCommandExecutor {
 
         TranslateResponse response = dictionary.translate(request);
 
-        System.out.printf("%s -> %s", response.getFrom().getISO2Code(), response.getTo().getISO2Code());
+        System.out.printf("%s -> %s%n", response.getFrom().getISO2Code(), response.getTo().getISO2Code());
 
         printTranslations(response);
     }
 
     private void printTranslations(TranslateResponse response) {
         if (response.getTranslations().isEmpty()) {
-            System.out.println("No translations found for " + response.getPhrase());
+            System.out.printf("No translations found for %s%n", response.getPhrase());
         } else {
             System.out.println("-------------------------------------");
-            System.out.println("translations found for " + response.getPhrase() + ":");
+            System.out.printf("Translations found for %s:%n", response.getPhrase());
             for (String str : response.getTranslations()) {
                 System.out.println(str);
             }

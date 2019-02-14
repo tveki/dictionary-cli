@@ -33,17 +33,17 @@ public class MeaningCommandExecutor extends AbstractCommandExecutor {
 
         TranslateResponse response = dictionary.translate(request);
 
-        System.out.println(response.getFrom().getISO2Code() + " -> " + response.getTo().getISO2Code());
+        System.out.printf("%s -> %s%n", response.getFrom().getISO2Code(), response.getTo().getISO2Code());
 
         printMeanings(response);
     }
 
     private void printMeanings(TranslateResponse response) {
         if (response.getMeanings().isEmpty()) {
-            System.out.println("No meanings found for " + response.getPhrase());
+            System.out.printf("No meanings found for %s%n", response.getPhrase());
         } else {
             System.out.println("-------------------------------------");
-            System.out.println("Meanings found for " + response.getPhrase() + ":");
+            System.out.printf("Meanings found for %s:%n", response.getPhrase());
             for (String str : response.getMeanings()) {
                 System.out.println(str);
             }
